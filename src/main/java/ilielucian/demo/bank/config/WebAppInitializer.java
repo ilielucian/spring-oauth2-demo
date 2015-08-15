@@ -1,4 +1,4 @@
-package ilielucian.demo.bankaccounts.config;
+package ilielucian.demo.bank.config;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
