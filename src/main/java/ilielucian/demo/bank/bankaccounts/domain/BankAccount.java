@@ -1,11 +1,10 @@
 package ilielucian.demo.bank.bankaccounts.domain;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 /**
  * Class simulating a simple bank account.

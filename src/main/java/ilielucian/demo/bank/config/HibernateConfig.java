@@ -14,16 +14,26 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 /**
+ * Bean configuration class for Hibernate related beans.
+ * <p>
  * Created by Lucian Ilie on 15-Aug-15.
  */
 @Configuration
 @ComponentScan(basePackages = "ilielucian.demo.bank")
 @EnableTransactionManagement
-public class HibernateConfig {
+class HibernateConfig {
 
+    /**
+     * Gets a configured {@link BasicDataSource} bean.
+     *
+     * @return {@link BasicDataSource} configured with DB driver, username and password
+     */
     @Bean
-    public DataSource getDataSource() {
+    DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
+
+        // TODO
+        // get DB parameters from properties file instead of hard-coded
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/database");
         dataSource.setUsername("root");
@@ -33,19 +43,23 @@ public class HibernateConfig {
 
     @Autowired
     @Bean
-    public SessionFactory sessionFactory(DataSource dataSource) {
+    SessionFactory sessionFactory(DataSource dataSource) {
         LocalSessionFactoryBuilder sessionFactoryBuilder =
                 new LocalSessionFactoryBuilder(dataSource);
         sessionFactoryBuilder.setProperty("hibernate.show_sql", "true");
+
+        // TODO
+        // get DB parameters from properties file instead of hard-coded
         sessionFactoryBuilder
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         sessionFactoryBuilder.addAnnotatedClass(BankAccount.class);
+
         return sessionFactoryBuilder.buildSessionFactory();
     }
 
     @Autowired
     @Bean
-    public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
+    HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
         return new HibernateTransactionManager(sessionFactory);
     }
 

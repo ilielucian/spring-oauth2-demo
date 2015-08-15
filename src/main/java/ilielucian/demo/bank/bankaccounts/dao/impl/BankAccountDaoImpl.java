@@ -7,7 +7,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -28,7 +27,6 @@ public class BankAccountDaoImpl implements BankAccountDao {
      * @param id ID of the bank account
      * @return the {@link BankAccount} with the ID searched, if found; <code>null</code>, if not found
      */
-    @Transactional
     public BankAccount getBankAccountById(long id) {
 
         Criteria criteria = sessionFactory.getCurrentSession()
@@ -37,10 +35,10 @@ public class BankAccountDaoImpl implements BankAccountDao {
 
         List<?> results = criteria.list();
 
-        if (results == null || results.size() == 0) {
-            return null;
-        } else {
+        if (results.size() > 0) {
             return (BankAccount) results.get(0);
+        } else {
+            return null;
         }
     }
 }
