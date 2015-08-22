@@ -1,6 +1,8 @@
-package ilielucian.demo.bank.config;
+package ilielucian.demo.bank.application.config;
 
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
+import ilielucian.demo.bank.users.domain.User;
+import ilielucian.demo.bank.users.domain.UserRole;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,8 @@ class HibernateConfig {
         sessionFactoryBuilder
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         sessionFactoryBuilder.addAnnotatedClass(BankAccount.class);
-
+        sessionFactoryBuilder.addAnnotatedClass(User.class);
+        sessionFactoryBuilder.addAnnotatedClass(UserRole.class);
         return sessionFactoryBuilder.buildSessionFactory();
     }
 

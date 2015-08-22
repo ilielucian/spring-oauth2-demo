@@ -11,7 +11,10 @@
     <properties>
         <java.version>1.8</java.version>
         <springframework.version>4.2.0.RELEASE</springframework.version>
+        <springsecurity.version>4.0.2.RELEASE</springsecurity.version>
+        <springoauth2.version>2.0.7.RELEASE</springoauth2.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
+        <jstl.version>1.2</jstl.version>
     </properties>
 
 
@@ -34,6 +37,32 @@
             <version>${springframework.version}</version>
         </dependency>
 
+        <!-- SPRING SECURITY DEPENDENCIES -->
+        <!-- Spring Security filters and related web-security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+        <!-- Spring Security JSP Taglib -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${springsecurity.version}</version>
+        </dependency>
+        <!-- Spring OAuth2 -->
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${springoauth2.version}</version>
+        </dependency>
+
+        <!-- JSTL FOR JSP PAGES -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
 
         <!-- JAVAX SERVLET DEPENDENCIES -->
         <dependency>
@@ -52,7 +81,6 @@
             <version>2.3.1</version>
         </dependency>
 
-
         <!-- JACKSON DEPENDENCIES -->
         <!-- Jackson databind for converting object to JSON -->
         <dependency>
@@ -60,7 +88,6 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.4.1</version>
         </dependency>
-
 
         <!-- HIBERNATE & EHCACHE DEPENDENCIES -->
         <!-- Hibernate Core API -->
@@ -109,17 +136,26 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.6</version>
                     <configuration>
                         <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                        <warName>SpringOauth2RestServiceDemo</warName>
+                        <warName>spring-oauth2-demo</warName>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.3</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
 
-        <finalName>SpringOauth2RestServiceDemo</finalName>
+        <finalName>spring-oauth2-demo</finalName>
     </build>
 
 </project>

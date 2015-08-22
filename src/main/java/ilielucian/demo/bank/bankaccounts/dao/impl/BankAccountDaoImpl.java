@@ -25,7 +25,8 @@ public class BankAccountDaoImpl implements BankAccountDao {
      * Gets the {@link BankAccount} result of the search into the DB, by <code>id</code>.
      *
      * @param id ID of the bank account
-     * @return the {@link BankAccount} with the ID searched, if found; <code>null</code>, if not found
+     * @return the {@link BankAccount} with the ID searched, if found;<br/>
+     *         <code>null</code>, if not found
      */
     public BankAccount getBankAccountById(long id) {
 

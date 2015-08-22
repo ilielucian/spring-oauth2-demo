@@ -1,7 +1,30 @@
 package ilielucian.demo.bank.authorization.config;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+
 /**
+ *
  * Created by Lucian Ilie on 15-Aug-15.
  */
-public class OAuth2ServerConfig {
+@Configuration
+class OAuth2ServerConfig {
+
+//    @Configuration
+//    @EnableResourceServer
+//    static class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+//
+//        @Override
+//        public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+//            super.configure(resources);
+//        }
+//
+//        @Override
+//        public void configure(HttpSecurity http) throws Exception {
+//            super.configure(http);
+//        }
+//    }
 }

@@ -1,5 +1,6 @@
-package ilielucian.demo.bank.config;
+package ilielucian.demo.bank.application.config;
 
+import ilielucian.demo.bank.authorization.config.SpringSecurityConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
