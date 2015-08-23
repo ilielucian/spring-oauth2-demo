@@ -1,6 +1,11 @@
 package ilielucian.demo.bank.users.domain;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "user")
 public class User {
 
     private String username;
@@ -46,6 +52,7 @@ public class User {
         this.enabled = enabled;
     }
 
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @OneToMany(mappedBy = "user")
     public Set<UserRole> getUserRoleSet() {
         return userRoleSet;

@@ -1,6 +1,11 @@
 package ilielucian.demo.bank.users.domain;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Class representing a User Role object in an authorization level sense.
@@ -10,6 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_roles", uniqueConstraints =
 @UniqueConstraint(columnNames = {"role", "username"}))
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "userRole")
 @SuppressWarnings("unused")
 public class UserRole {
 

@@ -27,7 +27,7 @@ import java.beans.PropertyVetoException;
 class HibernateConfig {
 
     /**
-     * Gets a configured {@link ComboPooledDataSource} bean.
+     * Gets a configured C3P0 {@link ComboPooledDataSource} bean.
      *
      * @return {@link ComboPooledDataSource} configured with DB driver, username and password
      */
@@ -60,6 +60,11 @@ class HibernateConfig {
         // get DB parameters from properties file instead of hard-coded
         sessionFactoryBuilder
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        sessionFactoryBuilder.setProperty("hibernate.cache.use_second_level_cache", "true");
+        sessionFactoryBuilder.setProperty("hibernate.cache.use_query_cache", "true");
+        sessionFactoryBuilder.
+                setProperty("hibernate.cache.region.factory_class",
+                        "org.hibernate.cache.ehcache.EhCacheRegionFactory");
         sessionFactoryBuilder.addAnnotatedClass(BankAccount.class);
         sessionFactoryBuilder.addAnnotatedClass(User.class);
         sessionFactoryBuilder.addAnnotatedClass(UserRole.class);
@@ -71,5 +76,4 @@ class HibernateConfig {
     HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
         return new HibernateTransactionManager(sessionFactory);
     }
-
 }
