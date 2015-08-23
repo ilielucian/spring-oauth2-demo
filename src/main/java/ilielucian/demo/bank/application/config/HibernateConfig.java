@@ -1,9 +1,9 @@
 package ilielucian.demo.bank.application.config;
 
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
 import ilielucian.demo.bank.users.domain.User;
 import ilielucian.demo.bank.users.domain.UserRole;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +14,7 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.beans.PropertyVetoException;
 
 /**
  * Bean configuration class for Hibernate related beans.
@@ -26,19 +27,24 @@ import javax.sql.DataSource;
 class HibernateConfig {
 
     /**
-     * Gets a configured {@link BasicDataSource} bean.
+     * Gets a configured {@link ComboPooledDataSource} bean.
      *
-     * @return {@link BasicDataSource} configured with DB driver, username and password
+     * @return {@link ComboPooledDataSource} configured with DB driver, username and password
      */
     @Bean
     DataSource getDataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
+        ComboPooledDataSource dataSource = new ComboPooledDataSource();
 
         // TODO
         // get DB parameters from properties file instead of hard-coded
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/database");
-        dataSource.setUsername("root");
+        try {
+            dataSource.setDriverClass("com.mysql.jdbc.Driver");
+        } catch (PropertyVetoException e) {
+            e.printStackTrace();
+        }
+
+        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/database");
+        dataSource.setUser("root");
         dataSource.setPassword("admin123");
         return dataSource;
     }
