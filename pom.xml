@@ -15,8 +15,6 @@
         <springoauth2.version>2.0.7.RELEASE</springoauth2.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <mysqlconnector.version>5.1.36</mysqlconnector.version>
-        <commons.dbcp.version>1.4</commons.dbcp.version>
-        <ehcache.version>2.6.11</ehcache.version>
         <slf4j.version>1.7.12</slf4j.version>
         <jstl.version>1.2</jstl.version>
         <jackson.version>2.4.1</jackson.version>
