@@ -23,7 +23,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
         ctx.setConfigLocation("ilielucian.demo.config");
 
-        ctx.register(WebAppConfig.class);
+        ctx.register(ApplicationConfig.class);
         ctx.setServletContext(servletContext);
 
         servletContext.addListener(new ContextLoaderListener(ctx));
