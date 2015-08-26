@@ -1,4 +1,4 @@
-package ilielucian.demo.bank.application.config;
+package ilielucian.demo.bank.config.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;

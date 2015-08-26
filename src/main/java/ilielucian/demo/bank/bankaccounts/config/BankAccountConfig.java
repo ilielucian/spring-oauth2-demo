@@ -1,6 +1,6 @@
 package ilielucian.demo.bank.bankaccounts.config;
 
-import ilielucian.demo.bank.application.config.WebAppConfig;
+import ilielucian.demo.bank.config.web.WebAppConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

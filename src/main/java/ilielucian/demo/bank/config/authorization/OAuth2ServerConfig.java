@@ -1,4 +1,4 @@
-package ilielucian.demo.bank.authorization.config;
+package ilielucian.demo.bank.config.authorization;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

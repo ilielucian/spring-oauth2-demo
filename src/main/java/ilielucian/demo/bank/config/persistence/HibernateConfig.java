@@ -1,4 +1,4 @@
-package ilielucian.demo.bank.application.config;
+package ilielucian.demo.bank.config.persistence;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;

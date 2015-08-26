@@ -1,6 +1,6 @@
 package ilielucian.demo.bank.bankaccounts.controller;
 
-import ilielucian.demo.bank.application.config.WebAppConfig;
+import ilielucian.demo.bank.config.web.WebAppConfig;
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
 import ilielucian.demo.bank.bankaccounts.service.BankAccountService;
 import ilielucian.demo.bank.config.TestConfig;
@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
