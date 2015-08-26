@@ -1,11 +1,8 @@
-package ilielucian.demo.bank.application.config;
+package ilielucian.demo.bank.config.web;
 
-import ilielucian.demo.bank.authorization.config.SpringSecurityConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -17,8 +14,11 @@ import org.springframework.web.servlet.view.JstlView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "ilielucian.demo.bank")
-class WebAppConfig {
+@ComponentScan(basePackages = {
+        "ilielucian.demo.bank.bankaccounts.controller",
+        "ilielucian.demo.bank.application.controller"
+})
+public class WebAppConfig {
 
     @Bean
     public InternalResourceViewResolver viewResolver() {

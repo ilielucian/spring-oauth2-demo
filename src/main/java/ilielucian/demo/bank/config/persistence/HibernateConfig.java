@@ -1,4 +1,4 @@
-package ilielucian.demo.bank.application.config;
+package ilielucian.demo.bank.config.persistence;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
@@ -22,9 +22,12 @@ import java.beans.PropertyVetoException;
  * Created by Lucian Ilie on 15-Aug-15.
  */
 @Configuration
-@ComponentScan(basePackages = "ilielucian.demo.bank")
 @EnableTransactionManagement
-class HibernateConfig {
+@ComponentScan(basePackages = {
+        "ilielucian.demo.bank.bankaccounts.dao",
+        "ilielucian.demo.bank.users.dao"
+})
+public class HibernateConfig {
 
     /**
      * Gets a configured C3P0 {@link ComboPooledDataSource} bean.

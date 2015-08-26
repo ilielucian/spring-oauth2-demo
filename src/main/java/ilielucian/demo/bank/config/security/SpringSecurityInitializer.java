@@ -1,4 +1,4 @@
-package ilielucian.demo.bank.application.config;
+package ilielucian.demo.bank.config.security;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

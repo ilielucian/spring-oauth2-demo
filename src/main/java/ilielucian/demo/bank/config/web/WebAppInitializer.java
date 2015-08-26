@@ -1,6 +1,6 @@
-package ilielucian.demo.bank.application.config;
+package ilielucian.demo.bank.config.web;
 
-import ilielucian.demo.bank.authorization.config.SpringSecurityConfig;
+import ilielucian.demo.bank.config.application.ApplicationConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -23,7 +23,7 @@ public class WebAppInitializer implements WebApplicationInitializer {
 
         ctx.setConfigLocation("ilielucian.demo.config");
 
-        ctx.register(WebAppConfig.class);
+        ctx.register(ApplicationConfig.class);
         ctx.setServletContext(servletContext);
 
         servletContext.addListener(new ContextLoaderListener(ctx));
