@@ -2,6 +2,7 @@ package ilielucian.demo.bank.bankaccounts.service.impl;
 
 import ilielucian.demo.bank.bankaccounts.dao.BankAccountDao;
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
+import ilielucian.demo.bank.bankaccounts.exception.BankAccountNotFoundException;
 import ilielucian.demo.bank.bankaccounts.service.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,14 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Autowired
     private BankAccountDao bankAccountDao;
 
-    @Transactional
-    public BankAccount findBankAccountById(long id) {
-        return bankAccountDao.getBankAccountById(id);
+    @Transactional(readOnly = true, rollbackFor = BankAccountNotFoundException.class)
+    public BankAccount findBankAccountById(long id) throws BankAccountNotFoundException {
+        BankAccount found =  bankAccountDao.getBankAccountById(id);
+
+        if (found == null) {
+            throw new BankAccountNotFoundException("No entry found with id: " + id);
+        }
+
+        return found;
     }
 }

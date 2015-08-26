@@ -33,7 +33,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      * Configures the authorization method based on a custom
      * {@link ilielucian.demo.bank.users.service.UserDetailsServiceImpl}.
      *
-     * @param authBuilder
+     * @param authBuilder the {@link AuthenticationManagerBuilder} bean
      * @throws Exception
      */
     @Autowired
