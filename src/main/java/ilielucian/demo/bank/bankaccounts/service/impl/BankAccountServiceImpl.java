@@ -16,8 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BankAccountServiceImpl implements BankAccountService {
 
-    @Autowired
     private BankAccountDao bankAccountDao;
+
+    @Autowired
+    public BankAccountServiceImpl(BankAccountDao bankAccountDao) {
+        this.bankAccountDao = bankAccountDao;
+    }
 
     @Transactional(readOnly = true, rollbackFor = BankAccountNotFoundException.class)
     public BankAccount findBankAccountById(long id) throws BankAccountNotFoundException {
