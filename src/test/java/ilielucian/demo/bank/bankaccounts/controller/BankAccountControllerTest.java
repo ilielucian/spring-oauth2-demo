@@ -1,5 +1,6 @@
 package ilielucian.demo.bank.bankaccounts.controller;
 
+import ilielucian.demo.bank.bankaccounts.exception.BankAccountNotFoundException;
 import ilielucian.demo.bank.config.web.WebAppConfig;
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
 import ilielucian.demo.bank.bankaccounts.service.BankAccountService;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
+ * Test class for the {@link BankAccountController}.
  *
  * Created by Lucian Ilie on 24-Aug-15.
  */
@@ -32,6 +34,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {TestConfig.class, WebAppConfig.class})
 @WebAppConfiguration
 public class BankAccountControllerTest {
+
+    private static final int ID = 1; // although model requires long, used int because of Hamcrest problem
+    private static final String HOLDER_FIRST_NAME = "Lucian";
+    private static final String HOLDER_LAST_NAME = "Ilie";
+    private static final String HOLDER_SSN = "1234567890123";
+    private static final BigDecimal BALANCE = new BigDecimal(6021.33);
 
     private MockMvc mockMvc;
 
@@ -49,24 +57,38 @@ public class BankAccountControllerTest {
 
     @Test
     public void findBankAccountById_ExistingBankAccount() throws Exception {
-
         BankAccount found = new BankAccount();
-        found.setId(1);
-        found.setHolderFirstName("Lucian");
-        found.setHolderLastName("Ilie");
-        found.setHolderSsn("1234567890123");
-        found.setBalance(new BigDecimal(6021.33));
+        found.setId(ID);
+        found.setHolderFirstName(HOLDER_FIRST_NAME);
+        found.setHolderLastName(HOLDER_LAST_NAME);
+        found.setHolderSsn(HOLDER_SSN);
+        found.setBalance(BALANCE);
 
-        when(bankAccountServiceMock.findBankAccountById(1)).thenReturn(found);
+        when(bankAccountServiceMock.findBankAccountById(ID)).thenReturn(found);
 
-        mockMvc.perform(get("/bankaccount/{id}", 1).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/bankaccount/{id}", ID).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith("application/json"))
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.holderFirstName", is("Lucian")))
-                .andExpect(jsonPath("$.holderLastName", is("Ilie")));
+                .andExpect(jsonPath("$.id", is(ID)))
+                .andExpect(jsonPath("$.holderFirstName", is(HOLDER_FIRST_NAME)))
+                .andExpect(jsonPath("$.holderLastName", is(HOLDER_LAST_NAME)))
+                .andExpect(jsonPath("$.holderSsn", is(HOLDER_SSN)))
+                .andExpect(jsonPath("$.balance", is(BALANCE)));
 
-        verify(bankAccountServiceMock, times(1)).findBankAccountById(1);
+        verify(bankAccountServiceMock, times(1)).findBankAccountById(ID);
         verifyNoMoreInteractions(bankAccountServiceMock);
     }
+
+    @Test
+    public void findBankAccountById_NonExistingBankAccount() throws Exception {
+        when(bankAccountServiceMock.findBankAccountById(ID)).thenThrow(new BankAccountNotFoundException(""));
+
+        mockMvc.perform(get("/bankaccount/{id}", ID))
+                .andExpect(status().isNotFound());
+
+        verify(bankAccountServiceMock, times(1)).findBankAccountById(ID);
+        verifyNoMoreInteractions(bankAccountServiceMock);
+    }
+
+
 }

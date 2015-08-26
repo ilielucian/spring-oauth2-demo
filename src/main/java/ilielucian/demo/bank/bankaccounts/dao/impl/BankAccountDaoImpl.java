@@ -5,6 +5,8 @@ import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @Repository
 public class BankAccountDaoImpl implements BankAccountDao {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BankAccountDaoImpl.class);
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -29,6 +33,7 @@ public class BankAccountDaoImpl implements BankAccountDao {
      *         <code>null</code>, if not found
      */
     public BankAccount getBankAccountById(long id) {
+        LOGGER.debug("Searching for bank account with id = {}", id);
 
         Criteria criteria = sessionFactory.getCurrentSession()
                 .createCriteria(BankAccount.class);
@@ -37,8 +42,10 @@ public class BankAccountDaoImpl implements BankAccountDao {
         List<?> results = criteria.list();
 
         if (results.size() > 0) {
+            LOGGER.debug("Found bank account with id = {}", id);
             return (BankAccount) results.get(0);
         } else {
+            LOGGER.debug("Not found bank account with id = {}", id);
             return null;
         }
     }
