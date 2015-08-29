@@ -18,12 +18,16 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    public UserDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public User getUserByUsername(String username) {
         Criteria criteria = sessionFactory.getCurrentSession()
-                .createCriteria(User.class).setCacheable(true);
+                .createCriteria(User.class).setCacheable(true).setCacheRegion("getUserByUsername");
         criteria.add(Restrictions.like("username", username, MatchMode.EXACT));
 
         List<?> results = criteria.list();

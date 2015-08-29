@@ -21,8 +21,12 @@ import java.util.*;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
     private UserDao userDao;
+
+    @Autowired
+    public UserDetailsServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     /**
      * Fetches a Spring Security {@link User} using the application {@link UserDao}.
@@ -51,7 +55,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @param grantedAuthorities list of Spring {@link GrantedAuthority}
      * @return a Spring Security {@link User} built upon passed parameters
      */
-    private User buildUserForAuthentication(
+    public User buildUserForAuthentication(
             ilielucian.demo.bank.users.domain.User user,
             List<GrantedAuthority> grantedAuthorities) {
 
@@ -66,7 +70,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      * @param userRoles set of {@link UserRole}s
      * @return list of {@link GrantedAuthority} for the passed parameter
      */
-    private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
+    public List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (UserRole userRole : userRoles) {
