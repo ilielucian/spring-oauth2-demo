@@ -65,12 +65,14 @@ public class UserDaoTest {
         org.springframework.security.core.userdetails.User expectedUserDetails =
                 userServiceMock.buildUserForAuthentication(EXPECTED_USER, expectedAuthority);
 
-        // test
+        // mock a return object from dao
         when(userDaoMock.getUserByUsername(USERNAME)).thenReturn(EXPECTED_USER);
 
+        // call the service
         org.springframework.security.core.userdetails.User foundUserDetails =
                 userServiceMock.loadUserByUsername(USERNAME);
 
+        // verify the results
         verify(userDaoMock, times(1)).getUserByUsername(USERNAME);
         verifyNoMoreInteractions(userDaoMock);
 

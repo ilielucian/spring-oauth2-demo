@@ -1,6 +1,7 @@
 package ilielucian.demo.bank.bankaccounts.controller;
 
 import ilielucian.demo.bank.bankaccounts.exception.BankAccountNotFoundException;
+import ilielucian.demo.bank.config.security.SpringSecurityConfig;
 import ilielucian.demo.bank.config.web.WebAppConfig;
 import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
 import ilielucian.demo.bank.bankaccounts.service.BankAccountService;
@@ -11,12 +12,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Created by Lucian Ilie on 24-Aug-15.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfig.class, WebAppConfig.class})
+@ContextConfiguration(classes = {TestConfig.class, WebAppConfig.class, SpringSecurityConfig.class})
 @WebAppConfiguration
 public class BankAccountControllerTest {
 
@@ -41,21 +41,43 @@ public class BankAccountControllerTest {
     private static final String HOLDER_SSN = "1234567890123";
     private static final BigDecimal BALANCE = new BigDecimal(6021.33);
 
+    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private BankAccountService bankAccountServiceMock;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
     @Before
     public void setUp() {
         Mockito.reset(bankAccountServiceMock);
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
+    public void findBankAccountById_UnauthenticatedUser() throws Exception {
+        mockMvc.perform(get("/bankaccount/{id}", ID))
+                .andExpect(status().isFound())
+                .andExpect(redirectedUrl("http://localhost/login"));
+
+        verify(bankAccountServiceMock, never()).findBankAccountById(ID);
+        verifyNoMoreInteractions(bankAccountServiceMock);
+    }
+
+    @Test
+    @WithMockUser(username = "lucian", password = "123456", roles = "USER")
+    // TODO
+    // use mock user instead of real user after implementing user registration in DB
+    public void findBankAccountById_UnauthorizedUser() throws Exception {
+        mockMvc.perform(get("/bankaccount/{id}", ID))
+                .andExpect(status().isForbidden());
+
+        verify(bankAccountServiceMock, never()).findBankAccountById(ID);
+        verifyNoMoreInteractions(bankAccountServiceMock);
+    }
+
+    @Test
+    @WithMockUser(username = "admin", password = "123456", roles = "ADMIN")
+    // TODO
+    // use mock user instead of real user after implementing user registration in DB
     public void findBankAccountById_ExistingBankAccount() throws Exception {
         BankAccount found = new BankAccount();
         found.setId(ID);
@@ -80,6 +102,9 @@ public class BankAccountControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin", password = "123456", roles = "ADMIN")
+    // TODO
+    // use mock user instead of real user after implementing user registration in DB
     public void findBankAccountById_NonExistingBankAccount() throws Exception {
         when(bankAccountServiceMock.findBankAccountById(ID)).thenThrow(new BankAccountNotFoundException(""));
 
@@ -89,6 +114,4 @@ public class BankAccountControllerTest {
         verify(bankAccountServiceMock, times(1)).findBankAccountById(ID);
         verifyNoMoreInteractions(bankAccountServiceMock);
     }
-
-
 }
