@@ -10,13 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- *
- * Created by Lucian Ilie on 18-Aug-15.
+ * Main controller of the application.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @Controller
 public class MainController {
 
-    @RequestMapping(value = { "/", "/welcome**" })
+    @RequestMapping(value = {"/", "/welcome**"})
     public ModelAndView defaultPage() {
 
         ModelAndView model = new ModelAndView();
@@ -40,7 +41,7 @@ public class MainController {
 
     @RequestMapping(value = "/login")
     public ModelAndView login(
-            @RequestParam(value = "error", required = false ) String error,
+            @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "logout", required = false) String logout) {
 
         ModelAndView model = new ModelAndView();
@@ -56,6 +57,7 @@ public class MainController {
         return model;
     }
 
+    @Deprecated
     @RequestMapping(value = "/403")
     public ModelAndView accessDenied() {
 
@@ -70,5 +72,16 @@ public class MainController {
 
         model.setViewName("403");
         return model;
+    }
+
+    @RequestMapping("/oauth/error")
+    public String handleError() throws Exception {
+
+        ModelAndView model = new ModelAndView();
+
+        // We can add more stuff to the model here for JSP rendering. If the client was a machine then
+        // the JSON will already have been rendered.
+        model.addObject("message", "There was a problem with the OAuth2 protocol");
+        return "oauth_error";
     }
 }
