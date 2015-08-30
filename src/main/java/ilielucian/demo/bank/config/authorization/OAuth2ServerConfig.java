@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -24,7 +25,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
  * Created by Lucian Ilie on 15-Aug-15.
  */
 @Configuration
-class OAuth2ServerConfig {
+public class OAuth2ServerConfig {
 
     private static final String BANK_RESOURCE_ID = "bank";
 
@@ -47,15 +48,9 @@ class OAuth2ServerConfig {
                     .and()
                     .authorizeRequests()
                         .antMatchers("/admin/**")
-                            .access("#oauth2.hasScope('read')")
+                            .hasRole("ADMIN")
                         .antMatchers("/bankaccount/**")
-                            .access("#oauth2.hasScope('trust') or (!#oauth2.isOAuth() and hasRole('ROLE_ADMIN'))")
-                    /*.regexMatchers(HttpMethod.DELETE, "/oauth/users/([^/].*?)/tokens/.*")
-                    .access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('ROLE_USER') or #oauth2.isClient()) and #oauth2.hasScope('write')")
-                    .regexMatchers(HttpMethod.GET, "/oauth/clients/([^/].*?)/users/.*")
-                    .access("#oauth2.clientHasRole('ROLE_CLIENT') and (hasRole('ROLE_USER') or #oauth2.isClient()) and #oauth2.hasScope('read')")
-                    .regexMatchers(HttpMethod.GET, "/oauth/clients/.*")
-                    .access("#oauth2.clientHasRole('ROLE_CLIENT') and #oauth2.isClient() and #oauth2.hasScope('read')")*/;
+                            .hasRole("ADMIN");
         }
     }
 
@@ -71,17 +66,23 @@ class OAuth2ServerConfig {
             return new InMemoryTokenStore();
         }
 
-        @Bean
-        ApprovalStore approvalStore() {
-            TokenApprovalStore store = new TokenApprovalStore();
-            store.setTokenStore(tokenStore());
+        @Autowired
+        private UserDetailsService userDetailsService;
 
-            return store;
-        }
+//        @Bean
+//        ApprovalStore approvalStore() {
+//            TokenApprovalStore store = new TokenApprovalStore();
+//            store.setTokenStore(tokenStore());
+//
+//            return store;
+//        }
 
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints.authenticationManager(authenticationManager).tokenStore(tokenStore());
+            endpoints
+                    .authenticationManager(authenticationManager)
+                    .tokenStore(tokenStore())
+                    .userDetailsService(userDetailsService);
         }
 
         @Override
@@ -95,8 +96,8 @@ class OAuth2ServerConfig {
                     .and()
                     .withClient("bank-client-postman")
                     .resourceIds(BANK_RESOURCE_ID)
-                    .authorizedGrantTypes("implicit")
-                    .authorities("ROLE_TRUSTED_CLIENT")
+                    .authorizedGrantTypes("password", "authorization_code", "implicit")
+                    .authorities("ROLE_ADMIN")
                     .scopes("read", "write")
                     .secret("secret")
                     .redirectUris("https://www.getpostman.com/oauth2/callback");

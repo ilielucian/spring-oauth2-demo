@@ -71,5 +71,4 @@ public class MainController {
         model.setViewName("403");
         return model;
     }
-
 }

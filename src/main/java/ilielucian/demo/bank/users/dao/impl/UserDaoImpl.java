@@ -27,7 +27,7 @@ public class UserDaoImpl implements UserDao {
 
     public User getUserByUsername(String username) {
         Criteria criteria = sessionFactory.getCurrentSession()
-                .createCriteria(User.class).setCacheable(true).setCacheRegion("getUserByUsername");
+                .createCriteria(User.class).setCacheable(true);
         criteria.add(Restrictions.like("username", username, MatchMode.EXACT));
 
         List<?> results = criteria.list();

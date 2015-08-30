@@ -52,6 +52,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/bankaccount/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("oauth/token").permitAll()
                 .and().formLogin()
                 .loginPage("/login").failureUrl("/login?error")
                 .usernameParameter("username")
