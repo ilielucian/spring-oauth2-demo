@@ -1,3 +1,11 @@
+CREATE TABLE 'bankaccounts' (
+  'ID' bigint(8) NOT NULL,
+  'FIRST_NAME' varchar(45) NOT NULL,
+  'LAST_NAME' varchar(45) NOT NULL,
+  'SSN' varchar(45) NOT NULL,
+  'BALANCE' decimal(10,2) NOT NULL,
+  PRIMARY KEY ('ID')
+);
 
 INSERT INTO bankaccounts VALUES (1001, 'Brad', 'Pitt', '1234567890123', 24509.04);
 INSERT INTO bankaccounts VALUES (1002, 'Ashton', 'Kutcher', '1234567890124', 32203.75);
