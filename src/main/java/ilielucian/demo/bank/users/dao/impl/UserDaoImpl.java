@@ -12,8 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- *
- * Created by Lucian Ilie on 15-Aug-15.
+ * Repository class implementation for the {@link UserDao} interface.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @Repository
 public class UserDaoImpl implements UserDao {

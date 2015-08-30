@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Custom service for fetching Spring Security {@link User}s.
  * <p/>
- * Created by Lucian Ilie on 15-Aug-15.
+ * Created by Lucian Ilie.
  */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

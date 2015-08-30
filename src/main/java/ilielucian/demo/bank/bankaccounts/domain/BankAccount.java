@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 /**
  * Class simulating a simple bank account.
  * <p>
- * Created by Lucian Ilie on 13-Aug-15.
+ * Created by Lucian Ilie.
  */
 @Entity
 @Table(name = "bankaccounts")

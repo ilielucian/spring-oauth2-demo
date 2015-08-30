@@ -9,8 +9,8 @@ import javax.persistence.Table;
 
 /**
  * Class representing a User Role object in an authorization level sense.
- *
- * Created by Lucian Ilie on 17-Aug-15.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @Entity
 @Table(name = "user_roles", uniqueConstraints =

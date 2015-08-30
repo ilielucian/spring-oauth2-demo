@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- *
- * Created by Lucian Ilie on 26-Aug-15.
+ * Stub error handler for bank account controller.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @ControllerAdvice(basePackages = "ilielucian.demo.bank.bankaccounts.controller")
 public class BankAccountErrorHandler {
@@ -20,6 +21,6 @@ public class BankAccountErrorHandler {
     @ExceptionHandler(BankAccountNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleBankAccountNotFoundException(BankAccountNotFoundException e) {
-        LOGGER.debug("Handling a 404 error on a bank account not found.");
+        LOGGER.debug("Handling a 404 error on a bank account not found.", e);
     }
 }
