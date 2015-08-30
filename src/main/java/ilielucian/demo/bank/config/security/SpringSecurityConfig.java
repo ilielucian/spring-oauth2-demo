@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * Class containing the Spring security settings of the application.
+ * Configuration class for the Spring security settings of the application.
  * <p>
  * Created by Lucian Ilie on 15-Aug-15.
  */
@@ -38,7 +38,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     public void configure(AuthenticationManagerBuilder authBuilder) throws Exception {
-        authBuilder.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        // authentication provided by a UserDetailsService, with encrypted password
+        authBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 
     /**
@@ -49,16 +52,34 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/bankaccount/**").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("oauth/token").permitAll()
-                .and().formLogin()
-                .loginPage("/login").failureUrl("/login?error")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and().logout().logoutSuccessUrl("/login?logout")
-                .and().csrf()
-                .and().exceptionHandling().accessDeniedPage("/403");
+        http
+                // allow access without authentication to welcome and login pages
+                .authorizeRequests()
+                    .antMatchers("/login", "/").permitAll()
+                .and()
+                // allow access only with role ADMIN to admin and bank account pages
+                .authorizeRequests()
+                    .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                    .antMatchers("/bankaccount/**").access("hasRole('ROLE_ADMIN')")
+                .and()
+                // allow access only with at least role USER for the rest of the pages
+                // here are included the oauth2 endpoints
+                .authorizeRequests()
+                    .anyRequest().hasRole("USER")
+                .and()
+                // configure form login on the login page
+                .formLogin()
+                    .loginPage("/login").failureUrl("/login?error")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                .and()
+                .logout()
+                    .logoutSuccessUrl("/login?logout")
+                .and()
+                // enable csrf (Cross Site Request Forgery protection)
+                .csrf()
+                // TODO replace it, as it is overridden by the oauth2 config
+                .and()
+                .exceptionHandling().accessDeniedPage("/403");
     }
 }

@@ -1,28 +1,23 @@
 package ilielucian.demo.bank.config.authorization;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.approval.ApprovalStore;
-import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 /**
- *
- * Created by Lucian Ilie on 15-Aug-15.
+ * Configuration class for OAuth2 resource server and authorization server.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @Configuration
 public class OAuth2ServerConfig {
@@ -41,16 +36,24 @@ public class OAuth2ServerConfig {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http
+                    // Since we want the protected resources to be accessible in the UI as well we need
+                    // session creation to be allowed (from oauth2 example)
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                     .and()
+                    // apply oauth2 authentication for the admin and bank account pages
                     .requestMatchers()
-                        .antMatchers("/admin/**", "/bankaccount/**", "/oauth/users/**", "/oauth/clients/**")
+                        .antMatchers("/admin/**", "/bankaccount/**")
                     .and()
+                    // allow access only if has oauth2 trust scope and trusted client role
+                    // or is authenticated as user/admin
                     .authorizeRequests()
                         .antMatchers("/admin/**")
-                            .hasRole("ADMIN")
+                            .access("(#oauth2.clientHasRole('ROLE_TRUSTED_CLIENT') and #oauth2.hasScope('trust')) or " +
+                                    "(!#oauth2.isOAuth() and hasRole('ROLE_ADMIN'))")
                         .antMatchers("/bankaccount/**")
-                            .hasRole("ADMIN");
+                        // experiment: this setting overrides the security config which had role admin
+                            .access("(#oauth2.clientHasRole('ROLE_TRUSTED_CLIENT') and #oauth2.hasScope('trust')) or " +
+                                    "(!#oauth2.isOAuth() and hasRole('ROLE_USER'))");
         }
     }
 
@@ -58,49 +61,34 @@ public class OAuth2ServerConfig {
     @EnableAuthorizationServer
     static class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-        @Autowired
-        private AuthenticationManager authenticationManager;
-
         @Bean
         TokenStore tokenStore() {
+            // TODO replace with JDBC token store
             return new InMemoryTokenStore();
         }
 
-        @Autowired
-        private UserDetailsService userDetailsService;
-
-//        @Bean
-//        ApprovalStore approvalStore() {
-//            TokenApprovalStore store = new TokenApprovalStore();
-//            store.setTokenStore(tokenStore());
-//
-//            return store;
-//        }
-
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints
-                    .authenticationManager(authenticationManager)
-                    .tokenStore(tokenStore())
-                    .userDetailsService(userDetailsService);
+            endpoints.tokenStore(tokenStore());
         }
 
         @Override
         public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            clients.inMemory()
-                    .withClient("bank-client")
-                    .resourceIds(BANK_RESOURCE_ID)
-                    .authorizedGrantTypes("authorization_code", "implicit")
-                    .authorities("ROLE_CLIENT")
-                    .scopes("read")
-                    .and()
-                    .withClient("bank-client-postman")
-                    .resourceIds(BANK_RESOURCE_ID)
-                    .authorizedGrantTypes("password", "authorization_code", "implicit")
-                    .authorities("ROLE_ADMIN")
-                    .scopes("read", "write")
-                    .secret("secret")
-                    .redirectUris("https://www.getpostman.com/oauth2/callback");
+            clients
+                    // TODO replace with JDBC client details service
+                    .inMemory()
+                        .withClient("bank-client")
+                        .resourceIds(BANK_RESOURCE_ID)
+                    // configure only for authorization code flow
+                        .authorizedGrantTypes("authorization_code")
+                        .authorities("ROLE_TRUSTED_CLIENT")
+                        .scopes("trust")
+                        .secret("secret");
+        }
+
+        @Override
+        public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+            security.allowFormAuthenticationForClients();
         }
     }
 }

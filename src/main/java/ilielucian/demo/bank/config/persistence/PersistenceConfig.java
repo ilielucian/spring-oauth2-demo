@@ -20,9 +20,9 @@ import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 
 /**
- * Bean configuration class for Hibernate related beans.
+ * Bean configuration class for Persistence / Hibernate related beans.
  * <p>
- * Created by Lucian Ilie on 15-Aug-15.
+ * Created by Lucian Ilie.
  */
 @Configuration
 @EnableTransactionManagement

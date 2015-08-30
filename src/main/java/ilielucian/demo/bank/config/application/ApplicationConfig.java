@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- *
- * Created by Lucian Ilie on 25-Aug-15.
+ * Global application configuration class. Used to centralize all configs
+ * of the application and keep each config separated.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @Configuration
 @Import({

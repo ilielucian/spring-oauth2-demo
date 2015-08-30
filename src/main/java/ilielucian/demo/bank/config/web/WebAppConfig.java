@@ -9,8 +9,8 @@ import org.springframework.web.servlet.view.JstlView;
 
 /**
  * Configuration class for Spring MVC.
- *
- * Created by Lucian Ilie on 13-Aug-15.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @Configuration
 @EnableWebMvc
@@ -20,6 +20,11 @@ import org.springframework.web.servlet.view.JstlView;
 })
 public class WebAppConfig {
 
+    /**
+     * Creates a new view resolver bean for the web app controllers.
+     *
+     * @return a new view resolver
+     */
     @Bean
     public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
