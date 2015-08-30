@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Test class for the {@link BankAccountController}.
  *
- * Created by Lucian Ilie on 24-Aug-15.
+ * Created by Lucian Ilie.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebAppConfig.class, SpringSecurityConfig.class})

@@ -5,7 +5,7 @@ import ilielucian.demo.bank.users.domain.User;
 /**
  * DAO for getting a User from the DB.
  * <p/>
- * Created by Lucian Ilie on 15-Aug-15.
+ * Created by Lucian Ilie.
  */
 public interface UserDao {
 

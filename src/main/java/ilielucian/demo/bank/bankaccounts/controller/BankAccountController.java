@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Simple Spring REST Controller for bank account service.
  * <p>
- * Created by Lucian Ilie on 13-Aug-15.
+ * Created by Lucian Ilie.
  */
 @RestController
 public class BankAccountController {

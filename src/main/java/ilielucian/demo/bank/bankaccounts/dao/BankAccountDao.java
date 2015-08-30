@@ -5,7 +5,7 @@ import ilielucian.demo.bank.bankaccounts.domain.BankAccount;
 /**
  * Data Access Object for a {@link BankAccount}.
  * <p>
- * Created by Lucian Ilie on 13-Aug-15.
+ * Created by Lucian Ilie.
  */
 public interface BankAccountDao {
 

@@ -18,8 +18,9 @@ import static org.mockito.Mockito.*;
 import static org.hamcrest.Matchers.*;
 
 /**
- *
- * Created by Lucian Ilie on 29-Aug-15.
+ * Test class for {@link UserDao}.
+ * <p>
+ * Created by Lucian Ilie.
  */
 public class UserDaoTest {
 

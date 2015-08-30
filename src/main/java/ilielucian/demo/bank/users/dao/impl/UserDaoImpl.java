@@ -12,8 +12,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- *
- * Created by Lucian Ilie on 15-Aug-15.
+ * Repository class implementation for the {@link UserDao} interface.
+ * <p>
+ * Created by Lucian Ilie.
  */
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -27,7 +28,7 @@ public class UserDaoImpl implements UserDao {
 
     public User getUserByUsername(String username) {
         Criteria criteria = sessionFactory.getCurrentSession()
-                .createCriteria(User.class).setCacheable(true).setCacheRegion("getUserByUsername");
+                .createCriteria(User.class).setCacheable(true);
         criteria.add(Restrictions.like("username", username, MatchMode.EXACT));
 
         List<?> results = criteria.list();

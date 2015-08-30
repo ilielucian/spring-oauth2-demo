@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * Class representing a User object.
  * <p/>
- * Created by Lucian Ilie on 15-Aug-15.
+ * Created by Lucian Ilie.
  */
 @Entity
 @Table(name = "users")

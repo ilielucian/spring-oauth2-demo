@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Class implementing the {@link BankAccountDao} interface.
  * <p>
- * Created by Lucian Ilie on 13-Aug-15.
+ * Created by Lucian Ilie.
  */
 @Repository
 public class BankAccountDaoImpl implements BankAccountDao {

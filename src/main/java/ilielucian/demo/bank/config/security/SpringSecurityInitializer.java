@@ -6,7 +6,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
  * Class implementing the {@link AbstractSecurityWebApplicationInitializer} interface.
  * Used to register the Spring security filters.
  *
- * Created by Lucian Ilie on 19-Aug-15.
+ * Created by Lucian Ilie.
  */
 public class SpringSecurityInitializer extends AbstractSecurityWebApplicationInitializer {
 }

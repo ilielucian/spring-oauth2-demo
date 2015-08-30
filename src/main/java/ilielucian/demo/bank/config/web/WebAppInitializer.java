@@ -13,7 +13,7 @@ import javax.servlet.ServletRegistration;
 /**
  * Class for initializing the Web Application. Replaces the <code>web.xml</code> file.
  * <p>
- * Created by Lucian Ilie on 13-Aug-15.
+ * Created by Lucian Ilie.
  */
 public class WebAppInitializer implements WebApplicationInitializer {
 

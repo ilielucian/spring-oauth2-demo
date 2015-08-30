@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.*;
 /**
  * Test class for the {@link BankAccountDao}.
  * <p>
- * Created by Lucian Ilie on 26-Aug-15.
+ * Created by Lucian Ilie.
  */
 public class BankAccountDaoTest {
 
